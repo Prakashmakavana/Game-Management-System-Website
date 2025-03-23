@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update Game</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* Background Gradient */
+        body {
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: rgba(0, 0, 0, 0.85) !important;
+            padding: 15px;
+            border-bottom: 2px solid #FFD700; /* Gold Border */
+        }
+
+        /* Centered Form Container */
+        .container {
+            margin-top: 80px;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Heading Styling */
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            color: #FFD700; /* Gold */
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid #FFD700; /* Gold Border */
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Upload Image Box */
+        .image-upload {
+            text-align: center;
+            border: 2px dashed #FFD700;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .image-upload:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #gameImage {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none; /* Hidden by default */
+        }
+
+        /* Button Styling */
+        .btn-group button {
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* Success Button */
+        .btn-success {
+            background: #28a745;
+            border: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        /* Danger Button */
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="Listing Page.html">🏠 Home</a>
+        </div>
+    </nav>
+
+    <!-- Update Game Form -->
+    <div class="container">
+        <h2 class="text-center mb-4">📝 Update Game</h2>
+        
+        <form id="updateForm">
+            <div class="mb-3">
+                <label class="form-label">Game Name:</label>
+                <input type="text" class="form-control" id="gameName" required placeholder="Enter game name">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Game Description:</label>
+                <textarea class="form-control" id="gameDesc" rows="3" required placeholder="Enter game description"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category:</label>
+                <select class="form-select" id="gameCategory">
+                    <option>Racing & Flying</option>
+                    <option>Card & Board</option>
+                    <option>Action & Adventure</option>
+                    <option>Puzzle & Trivia</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Size:</label>
+                <input type="text" class="form-control" id="gameSize" required placeholder="Enter game size (e.g., 500MB)">
+            </div>
+
+            <!-- Image Upload Section -->
+            <div class="mb-3 text-center">
+                <label class="form-label">Game Image:</label>
+                <div class="image-upload" onclick="document.getElementById('gameImageInput').click();">
+                    <p>📷 Click to Upload Image</p>
+                </div>
+                <input type="file" class="form-control d-none" id="gameImageInput" accept="image/*">
+                <img id="gameImage" src="" alt="Game Image Preview">
+            </div>
+
+            <div class="btn-group w-100">
+                <button type="submit" class="btn btn-success w-50">Update Game</button>
+                <button type="reset" class="btn btn-danger w-50">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Get game data from URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const gameId = params.get("id");
+        const gameName = params.get("name");
+        const gameDesc = params.get("desc");
+        const gameCategory = params.get("category");
+        const gameSize = params.get("size");
+        const gameImage = params.get("image");
+
+        // Populate form fields
+        document.getElementById("gameName").value = gameName || "";
+        document.getElementById("gameDesc").value = gameDesc || "";
+        document.getElementById("gameCategory").value = gameCategory || "Racing & Flying";
+        document.getElementById("gameSize").value = gameSize || "";
+        
+        // Show existing image if available
+        if (gameImage) {
+            document.getElementById("gameImage").src = gameImage;
+            document.getElementById("gameImage").style.display = "block";
+        }
+
+        // Handle image upload and preview
+        document.getElementById("gameImageInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("gameImage").src = e.target.result;
+                    document.getElementById("gameImage").style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission (Update & Redirect)
+        document.getElementById("updateForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Store updated game data in local storage (or send to backend)
+            const updatedGame = {
+                id: gameId,
+                name: document.getElementById("gameName").value,
+                desc: document.getElementById("gameDesc").value,
+                category: document.getElementById("gameCategory").value,
+                size: document.getElementById("gameSize").value,
+                image: document.getElementById("gameImage").src
+            };
+
+            localStorage.setItem("updatedGame", JSON.stringify(updatedGame));
+
+            alert("Game updated successfully!");
+
+            // Redirect to listing page
+            window.location.href = "Listing Page.html";
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

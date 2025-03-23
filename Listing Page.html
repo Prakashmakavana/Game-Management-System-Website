@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background: rgba(0, 0, 0, 0.8) !important;
+            padding: 15px;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .container {
+            margin-top: 80px;
+        }
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        .card:hover {
+            transform: scale(1.03);
+        }
+        .btn-group button {
+            border-radius: 10px;
+            margin: 5px;
+        }
+        .logout-btn {
+            background: red;
+            color: white;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .logout-btn:hover {
+            background: darkred;
+        }
+        .add-game-btn {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 8px 15px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .add-game-btn:hover {
+            background: #FFA500;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">🎮 Game Zone</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn add-game-btn" href="Add Page.html">➕ Add Game</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <button class="btn logout-btn" onclick="logout()">🚪 Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center mb-4">🎮 Manage Games</h1>
+        <div id="gameList" class="row">
+            <!-- Games will be inserted here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Game Data
+        const games = [
+            { id: 1, name: "Nobi Temple Jungle Run", category: "Racing & Flying", size: "82MB", page: "nobi-temple.html" },
+            { id: 2, name: "Simple Solitaire", category: "Card & Board", size: "201MB", page: "solitaire.html" },
+            { id: 3, name: "Minecraft", category: "Action & Adventure", size: "320MB", page: "minecraft.html" },
+            { id: 4, name: "Candy Crush Saga", category: "Puzzle & Trivia", size: "150MB", page: "candy-crush.html" },
+            { id: 5, name: "Call of Duty Mobile", category: "Action & Adventure", size: "1.5GB", page: "cod-mobile.html" },
+            { id: 6, name: "GTA V Mobile", category: "Action & Adventure", size: "2.5GB", page: "gta-v-mobile.html" }  
+        ];
+
+        const gameList = document.getElementById("gameList");
+
+        function loadGames() {
+            gameList.innerHTML = "";
+            games.forEach(game => {
+                gameList.innerHTML += `
+                    <div class="col-md-4">
+                        <div class="card bg-light text-dark">
+                            <div class="card-body">
+                                <h5 class="card-title">${game.name}</h5>
+                                <p class="card-text"><strong>Category:</strong> ${game.category}</p>
+                                <p class="card-text"><strong>Size:</strong> ${game.size}</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-info" onclick="updateGame(${game.id})">Update</button>
+                                    <button class="btn btn-warning" onclick="location.href='${game.page}'">Details</button>
+                                    <button class="btn btn-danger" onclick="deleteGame(${game.id})">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateGame(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (game) {
+                const params = new URLSearchParams();
+                params.append("id", game.id);
+                params.append("name", game.name);
+                params.append("category", game.category);
+                params.append("size", game.size);
+                
+                window.location.href = `Update Page.html?${params.toString()}`;
+            }
+        }
+
+        function deleteGame(gameId) {
+            const index = games.findIndex(game => game.id === gameId);
+            if (index !== -1) {
+                games.splice(index, 1);
+                loadGames();
+            }
+        }
+
+        function logout() {
+            // Redirect to the login page
+            window.location.href = "Login Page.html";
+        }
+
+        loadGames();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar {
+            background: rgba(0, 0, 0, 0.9) !important;
+            padding: 15px;
+        }
+        .container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+        }
+        .btn {
+            border-radius: 10px;
+            padding: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-success {
+            background: #28a745;
+            border: none;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="Listing Page.html">🏠 Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Game</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Racing & Flying</a></li>
+                            <li><a class="dropdown-item" href="#">Card & Board</a></li>
+                            <li><a class="dropdown-item" href="#">Action & Adventure</a></li>
+                            <li><a class="dropdown-item" href="#">Puzzle & Trivia</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="#">🚪 Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center">🎮 Add Game</h2>
+        <form class="needs-validation mt-3" novalidate>
+            <div class="mb-3">
+                <label for="gameName" class="form-label">Game Name:</label>
+                <input type="text" class="form-control" id="gameName" placeholder="Enter game name..." required>
+                <div class="invalid-feedback">Please enter a game name.</div>
+            </div>
+            <div class="mb-3">
+                <label for="gameImage" class="form-label">Select Image:</label>
+                <input type="file" class="form-control" id="gameImage" required>
+                <div class="invalid-feedback">Please select an image.</div>
+            </div>
+            <div class="mb-3">
+                <label for="gameDesc" class="form-label">Description:</label>
+                <textarea class="form-control" id="gameDesc" rows="3" placeholder="Enter game description..." required></textarea>
+                <div class="invalid-feedback">Please enter a description.</div>
+            </div>
+            <div class="mb-3">
+                <label for="gameCategory" class="form-label">Select a Category:</label>
+                <select class="form-select" id="gameCategory">
+                    <option selected>Racing & Flying</option>
+                    <option>Card & Board</option>
+                    <option>Action & Adventure</option>
+                    <option>Puzzle & Trivia</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="gameSize" class="form-label">Game Size:</label>
+                <input type="text" class="form-control" id="gameSize" placeholder="Enter game size..." required>
+                <div class="invalid-feedback">Please enter a game size.</div>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">✔ Add Game</button>
+                <button type="reset" class="btn btn-danger">✖ Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Form Validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        // Capture Form Data and Redirect After Alert
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (!this.checkValidity()) return;
+
+            const gameData = {
+                name: document.querySelector("#gameName").value,
+                image: document.querySelector("#gameImage").files[0]?.name,
+                description: document.querySelector("#gameDesc").value,
+                category: document.querySelector("#gameCategory").value,
+                size: document.querySelector("#gameSize").value,
+            };
+
+            console.log("Game Added:", gameData);
+            
+            alert("Game added successfully!");
+
+            // Delay redirection for better user experience
+            setTimeout(() => {
+                window.location.href = "Listing Page.html"; // Update this to the correct file name
+            }, 1500); // Redirect after 1.5 seconds
+
+            this.reset();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
